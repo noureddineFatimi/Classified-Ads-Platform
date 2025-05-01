@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <div class="row justify-content-center align-items-center shadow rounded overflow-hidden">
+    
+    <div class="col-md-6 p-0 d-none d-md-block bg-light">
+      <img src="<%= asset_path('image.svg') %>" alt="Connexion illustration" class="img-fluid h-70 w-70 object-fit-cover" style="object-fit: cover;">
+    </div>
+
+    <div class="col-md-6 p-5 bg-white">
+      <h2 class="text-center mb-4">Connexion</h2>
+
+   <% if @userConnecté %>
+        <p class="text-success">Connecté en tant que : <strong><%= @userConnecté.username %></strong></p>
+      <% end %>
+
+      <% if flash.now[:alert] %>
+        <div class="alert alert-danger text-center fw-bold">
+          <%= flash.now[:alert] %>
+        </div>
+      <% end %>
+
+      <% if flash[:error] %>
+        <div class="alert alert-danger text-center fw-bold">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+
+      <%= form_with(url: login_path, method: :post, html: { class: "needs-validation" }) do |form| %>
+        <div class="mb-3">
+          <%= form.label :email, "Adresse e-mail", class: "form-label" %>
+          <%= form.email_field :email, class: "form-control", placeholder: "exemple@email.com", required: true %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :password_digest, "Mot de passe", class: "form-label" %>
+          <%= form.password_field :password_digest, class: "form-control", required: true %>
+        </div>
+
+        <div class="d-grid gap-2">
+          <%= form.submit "Se connecter", class: "btn btn-primary btn-lg" %>
+        </div>
+      <% end %>
+
+      <div class="text-center mt-3">
+        <p>Pas encore inscrit ? <%= link_to "Créer un compte", account_path, class: "link-primary" %></p>
+      </div>
+    </div>
+  </div>
+</div>

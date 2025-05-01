@@ -1,0 +1,15 @@
+<div style = "margin-bottom: 1rem;padding: 1.5rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 18px 0px;" class = "container mt-5 ">
+<h3 class="mb-4">Photos de l'annonce </h3>
+
+<%= form_with url: add_3_path, method: :post, local: true, multipart: true, scope: :announcement, class: "row g-3 align-items-end",html:{style:"display: flex; flex-direction:column;gap:1rem"} do |form| %>
+  <div>
+    <%= form.label :images, "Ajoutez des images", class: "form-label" %>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(plusieurs possibles)</span>
+    <%= form.file_field :images, multiple: true, class: "form-control" %>
+  </div>
+
+  <div>
+    <%= form.submit "Publier l'annonce", class: "btn btn-success w-100" %>
+  </div>
+  </div>
+<% end %>

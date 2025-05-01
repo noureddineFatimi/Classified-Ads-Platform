@@ -1,0 +1,78 @@
+<div class="row" style="
+    width: 100%;
+    padding-left: 1.5rem;">
+
+
+  <%= form_with url: annoucements_search_path, method: :get, local: true, class: "row g-3 mb-4" do |form| %>
+    <div class="col-md-4">
+      <%= form.text_field :mot_cle, class: "form-control", placeholder: "Que recherchez-vous ?" ,style: "border-radius:50px 0 0 50px;
+    background-color: rgb(250, 250, 250);
+    border: none; "%>
+    </div>
+
+    <div class="col-md-3">
+      <%= form.select :ville, 
+      options_from_collection_for_select(@tous_les_villes, :name, :name, params[:ville]), 
+      { include_blank: "Toutes les villes" }, 
+      { class: "form-select", style: "width: 100%; padding: .375rem .75rem; background-color: rgb(250, 250, 250); border: none;cursor: pointer;" } %>
+    </div>
+
+    <div class="col-md-3">
+      <%= form.select :categorie_id, options_for_select(@categories_feuilles_avec_chemin, params[:categorie_id]), {include_blank: "Toutes les catégories"}, {class: "form-select" , style:" width: 100%; padding: .375rem .75rem; background-color: rgb(250, 250, 250); border: none;cursor: pointer;"}%>
+    </div>
+
+    <div class="col-md-2">
+      <%= form.submit "Rechercher", class: "btn btn-primary w-100" ,style: "border-radius: 0px 50px 50px 0;border:none;"%>
+    </div>
+  <% end %>
+
+  <hr>
+
+  
+<%if @categorie != nil %>
+    <p style = "font-size:20px;font-weight:500;margin-bottom:0;"> <%= @categorie.name%></p>
+  <%end%>
+
+  <%if @nomVille != nil %>
+    <p style = "font-size:15px;font-weight:500;"><%= @nomVille%></p>
+  <%end%>
+
+  <div style="margin-bottom: 1rem;"></div>
+
+  <%if !@annonces.any?%>
+  <p class="text-muted">Aucune annonce trouvée.</p>
+  <%else%>
+  <% @annonces.each do |annonce| %>
+    <% user = UserApp.find(annonce.user_app_id) %>
+    <% city = City.find(annonce.city_id) %>
+    
+    <div class="col-md-3 mb-4">
+      <%= link_to announcement_path(annonce), class: "text-decoration-none text-dark" do %>
+        <div class="card h-100 shadow-sm rounded overflow-hidden" style= "padding: 1rem;">
+           <p class="mb-0 fw-bold"><%= user.username %></p>
+            <p class="text-muted mb-3" style="font-size: 0.9rem;">Publié le <%= annonce.pub_date.strftime("%d/%m/%Y") %></p>
+          <% if annonce.images.attached? %>
+            <%= image_tag annonce.images.first.variant(resize_to_limit: [400, 200]), class: "card-img-top", style: "height: 200px; object-fit: cover;",alt: annonce.title ,loading: "lazy" %>
+          <% else %>
+            <%= image_tag "placeholder.jpg", class: "card-img-top", style: "height: 200px; object-fit: cover;",alt: "Pas d'image",loading: "lazy"  %>
+          <% end %>
+
+          <div class="card-body" style="padding-top: 0.5rem;padding-bottom:0;padding-left: 0;">
+       
+            <p class=" text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem; padding-left: 0.5rem; "><%= city.name %></p>
+
+         
+            <h6 style="margin-bottom:0.25rem"><%= annonce.title %></h6>
+  
+            <% if annonce.price.present? %>
+              <p class="text-primary" style="font-weight:450;"><%= number_to_currency(annonce.price, unit: "", precision: 0) %> MAD</p>
+            <% else %>
+              <p class="text-primary" style="font-weight:450;">Prix non spécifié</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <%end%>
+</div>

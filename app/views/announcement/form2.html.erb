@@ -1,0 +1,37 @@
+<div style = "margin-bottom: 1rem;padding: 1.5rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 18px 0px;" class = "container mt-5">
+<h3 class="mb-4">Détails de l'annonce</h3>
+
+<%= form_with url: add_2_path, method: :post, local: true, scope: :announcement, class: "row g-3" do |form| %>
+<% if flash[:error] %>
+        <div class="alert alert-danger text-center fw-bold">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+  <% @hash_des_options_pour_chaque_property_select.each do |nom, options| %>
+    <div style="display: flex;
+    flex-direction: column;">
+    <div style = "display: flex; gap:5px;">
+    <span style="color : red;">*</span>
+    
+      <%= form.label nom, nom, class: "form-label" %>
+      </div>
+      <%= form.select nom, options_from_collection_for_select(options, :id, :value,session[:form2]&.dig(nom.to_s)), { class: "form-select"} ,{style: "width: 100%;
+    padding: .375rem .75rem;
+    background-color: rgb(250, 250, 250);
+    border: none;cursor: pointer;" } %>
+    </div>
+  <% end %>
+
+  <% @liste_des_properties.each do |prop| %>
+    <% if prop.field_type != "select" %>
+      <div>
+        <%= form.label prop.name, prop.name, class: "form-label" ,style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);"%>
+        <%= form.text_field prop.name, class: "form-control", placeholder: "Saisir #{prop.name.downcase}" ,value: session[:form2]&.dig(prop.name)%>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="col-md-12">
+    <%= form.submit "Suivant", class: "btn btn-primary w-100" %>
+  </div>
+<% end %>

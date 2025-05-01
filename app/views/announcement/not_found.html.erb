@@ -1,0 +1,12 @@
+<div class="container mt-5 text-center">
+  <h1 class="display-4 text-danger mb-4">404</h1>
+  <p class="lead">Page introuvable</p>
+
+  <% if flash[:error] %>
+    <div class="alert alert-danger fw-bold mt-4 mx-auto" style="max-width: 500px;">
+      <%= flash[:error] %>
+    </div>
+  <% end %>
+
+  <%= link_to "Retour à l'accueil", root_path, class: "btn btn-primary mt-4" %>
+</div>

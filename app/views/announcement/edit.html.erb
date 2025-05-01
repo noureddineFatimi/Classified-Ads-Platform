@@ -1,0 +1,121 @@
+<div style = "margin-bottom: 1rem;padding: 1.5rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 18px 0px;" class = "container mt-5">
+
+<h3 class="mb-4">Modifier votre annonce</h3>
+
+<%= form_with url: edit_announcement_post_path(@annonce.id), method: :patch, local: true, multipart: true do |form| %>
+
+  <% if @annonce && @annonce.errors.any? %>
+              <div class="alert alert-danger">
+                <h4>Erreurs :</h4>
+                <ul>
+                  <% @annonce.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+  <div>
+    <span style="color : red;">*</span>
+    <%= form.label :titre, "Titre de l'annonce", class: "form-label",style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);" %>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(au minimum 5 caractères)</span>
+    <%= form.text_field :titre, class: "form-control", value: @annonce.title %>
+  </div>
+
+  <div style="display: flex;
+    flex-direction: column;">
+    <div style = "display: flex; gap:5px;margin-top: 1rem;">
+    <span style="color : red;">*</span>
+    <%= form.label :ville, "Ville", class: "form-label" %>
+    </div>
+    <%= form.select :ville, options_from_collection_for_select(@villes, :id, :name, @annonce.city_id), { class: "form-select"} ,{style: "width: 100%;
+    padding: .375rem .75rem;
+    background-color: rgb(250, 250, 250);
+    border: none;cursor: pointer;" } %>
+  </div>
+
+  <div>
+    <span style="color : red;margin-top: 1rem;">*</span>
+    <%= form.label :num_tele, "Numéro de téléphone", class: "form-label" ,style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);margin-top: 1rem;" %>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(doit contenir exactement 10 chiffres)</span>
+    <%= form.text_field :num_tele, class: "form-control", value: @annonce.phone_number %>
+  </div>
+
+  <div>
+     <span style="color : red;margin-top: 1rem;">*</span>
+    <%= form.label :description, "Description", class: "form-label",style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);margin-top: 1rem;" %>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(au minimum 10 caractères)</span>
+    <%= form.text_field :description, class: "form-control", value: @annonce.description%>
+  </div>
+
+  <div >
+    <%= form.label :prix, "Prix (DH)", class: "form-label",style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);margin-top: 1rem;" %>
+    <%= form.number_field :prix, class: "form-control", value: @annonce.price %>
+  </div>
+
+ <% @hash_des_options_property_select.each do |nom, options| %>
+  <div style="display: flex;
+    flex-direction: column;">
+    <div style = "display: flex; gap:5px;margin-top: 1rem;">
+    <span style="color : red;">*</span>
+    <%= form.label nom, nom, class: "form-label" %>
+</div>
+ 
+    <% valeur_propriete = @annonce.property_values.find_by(property_field_id: options.first.property_field_id)&.value %>
+
+    <% selected_option_id = PropertyFieldOption.find_by(property_field_id: options.first.property_field_id, value: valeur_propriete)&.id %>
+
+    <%= form.select nom, options_from_collection_for_select(options, :id, :value, selected_option_id), { class: "form-select"} ,{style: "width: 100%;
+    padding: .375rem .75rem;
+    background-color: rgb(250, 250, 250);
+    border: none;cursor: pointer;" } %>
+  </div>
+<% end %>
+
+<% @proprietés.each do |prop| %>
+  <% if prop.field_type != "select" %>
+    <div>
+      <%= form.label prop.name, prop.name, class: "form-label",style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);margin-top: 1rem;" %>
+
+      <% current_value = @annonce.property_values.find_by(property_field_id: prop.id)&.value %>
+
+      <%= form.text_field prop.name, class: "form-control", value: current_value %>
+    </div>
+  <% end %>
+<% end %>
+
+
+  <div>
+      <h6 style="margin-top:1rem;margin-bottom:1rem">Images actuelles</h6>
+      <div class="row g-3">
+        <% if @annonce.images.attached? %>
+          <% @annonce.images.each do |image| %>
+            <div class="col-md-3 mb-3">
+              <%= image_tag image, class: "img-thumbnail", style: "height: 200px; object-fit: cover;" ,loading: "lazy" %>
+              <div class="form-check mt-2">
+                <%= form.check_box "remove_image_#{image.id}", class: "form-check-input" %>
+                <%= form.label "remove_image_#{image.id}", "Supprimer cette image", class: "form-check-label" %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="col-12">
+            <p>Aucune image disponible</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mt-3">
+      <%= form.label :new_images, "Ajouter des nouvelles images", class: "form-label" %>
+      <%= form.file_field :new_images, multiple: true, class: "form-control" %>
+      <small class="form-text text-muted">Vous pouvez sélectionner plusieurs images à la fois</small>
+    </div>
+    
+    <div style="margin-top:1rem">
+      <%= form.submit "Modifier", class: "btn btn-primary w-100" %>
+    </div>
+  </div>
+
+<% end %>
+</div>

@@ -1,0 +1,52 @@
+<div class="container mt-5">
+  <div class="row justify-content-center align-items-center shadow rounded overflow-hidden">
+
+    <div class="col-md-6 p-0 d-none d-md-block bg-light">
+      <img src="<%= asset_path('image.svg') %>" alt="Créer un compte" class="img-fluid h-70 w-70 object-fit-cover" style="object-fit: cover;">
+    </div>
+
+    <div class="col-md-6 p-5 bg-white">
+      <h2 class="text-center mb-4">Créer un compte</h2>
+
+      <% if @userConnecté %>
+        <p class="text-success">Connecté en tant que : <strong><%= @userConnecté.username %></strong></p>
+      <% end %>
+
+      <%= form_with(model: @user, url: account_path, html: { class: "needs-validation" }) do |form| %>
+        <% if @user && @user.errors.any? %>
+          <div class="alert alert-danger">
+            <h5 class="fw-bold">Erreurs :</h5>
+            <ul>
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= form.label :username, "Nom d'utilisateur", class: "form-label" %>
+          <%= form.text_field :username, class: "form-control", required: true %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :email, "Adresse e-mail", class: "form-label" %>
+          <%= form.email_field :email, class: "form-control", required: true %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :password, "Mot de passe", class: "form-label" %>
+          <%= form.password_field :password, class: "form-control", required: true %>
+        </div>
+
+        <div class="d-grid gap-2">
+          <%= form.submit "Créer mon compte", class: "btn btn-success btn-lg" %>
+        </div>
+      <% end %>
+
+      <div class="text-center mt-3">
+        <p>Déjà inscrit ? <%= link_to "Se connecter", login_path, class: "link-primary" %></p>
+      </div>
+    </div>
+  </div>
+</div>

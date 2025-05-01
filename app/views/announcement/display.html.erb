@@ -1,0 +1,71 @@
+<div class="container mt-5" style = "margin-bottom: 1rem;padding: 1.5rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 18px 0px;">
+
+  <% if @annonce_a_afficher.images.attached? %>
+    <div class="row mb-4">
+      <% @annonce_a_afficher.images.each do |image| %>
+        <div class="col-md-4 mb-3">
+          <%= image_tag url_for(image), class: "img-fluid rounded shadow", style: "height: 300px; object-fit: cover; width: 100%;" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">Aucune image n'est associée à cette annonce.</p>
+  <% end %>
+
+  <div class="d-flex justify-content-between align-items-center" style = "margin-bottom: 0.5rem">
+    <p class="mb-0" style = "font-size:24px;font-weight: 500;"><%= @annonce_a_afficher.title %></p>
+    <p class="text-success mb-0" style = "font-size:24px">
+      <% if @annonce_a_afficher.price.present? %>
+        <%= number_to_currency(@annonce_a_afficher.price, unit: "MAD ") %>
+      <% else %>
+        Prix non spécifié
+      <% end %>
+    </p>
+  </div>
+
+  <p  style = "border-bottom: gray solid 0.3px;  color: rgb(46, 107, 255);
+    font-size: 14px;
+    font-weight: 500;padding-bottom: 1rem">
+    <%= @nom_ville.name %> - Publié le : <%= l(@annonce_a_afficher.pub_date, format: :long) %>
+  </p>
+
+<div style ="border-bottom: gray solid 0.3px;">
+  <p style = "color: rgb(102, 102, 102);
+    font-size: 14px;
+    font-weight: 400; margin-bottom:0.5px;">Catégorie</p>
+  <%categorie = CategoryApp.find(@annonce_a_afficher.category_app_id)%>
+  <p style = "    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: 400;"><%=categorie.name%></p>
+</div>
+  <% if @tableau_des_caracteristiques.present? %>
+    <div style="display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 16px; margin-top:1rem;">
+        <% @tableau_des_caracteristiques.each do |prop| %>
+        <div style= "display: flex; flex-direction: column;">
+          <div style = "font-size: 16px; font-weight:400"><%= prop.value %></div>
+          <div style = "    color: rgb(102, 102, 102);
+    font-size: 14px;
+    font-weight: 400;"><%= prop.property_field.name %></div>
+        </div>
+          
+        <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <p style = "    color: rgb(0, 0, 0);
+    font-size: 20px;
+    font-weight: 500;">Description</p>
+    <p><%= @annonce_a_afficher.description %></p>
+  </div>
+
+  <div class="mt-5 p-4 border rounded bg-light">
+    <h5 class="mb-3">Informations du vendeur</h5>
+    <p><strong>Nom d'utilisateur :</strong> <%= @username_annonceur.username %></p>
+    <p><strong>Téléphone :</strong> <%= @annonce_a_afficher.phone_number %></p>
+  </div>
+
+</div>

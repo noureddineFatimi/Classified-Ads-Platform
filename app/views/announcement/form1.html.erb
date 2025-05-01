@@ -1,0 +1,77 @@
+<div style = "margin-bottom: 1rem;padding: 1.5rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 18px 0px;" class = "container mt-5">
+<h3 class="mb-4">Qu'annoncez-vous aujourd'hui ?</h3>
+
+<%= form_with url: add_1_path, method: :post, local: true, html:{style: "display: flex; flex-direction: column; gap: 2rem"} do |form| %>
+
+ <% if flash[:error] %>
+        <div class="alert alert-danger text-center fw-bold">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+
+
+ <% if @annonce && @annonce.errors.any? %>
+              <div class="alert alert-danger">
+                <h4>Erreurs :</h4>
+                <ul>
+                  <% @annonce.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+  <div >
+    <span style="color : red;">*</span>
+    <%= form.label :titre, "Titre de l'annonce", class: "form-label",style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);" %>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(au minimum 5 caractères)</span>
+    <%= form.text_field :titre, class: "form-control", placeholder: "ex: iPhone 13", value: session[:form1]&.dig("titre") %>
+  </div>
+
+
+  <div style="display: flex;
+    flex-direction: column;">
+    <div style = "display: flex; gap:5px;">
+    <span style="color : red;">*</span>
+    <%= form.label :ville, "Ville", class: "form-label" %>
+    </div>
+    <%= form.select :ville, options_from_collection_for_select(@liste_des_villes, :id, :name,session[:form1]&.dig("ville_id")), { class: "form-select"} ,{style: "width: 100%;
+    padding: .375rem .75rem;
+    background-color: rgb(250, 250, 250);
+    border: none;cursor: pointer;" } %>
+  </div>
+
+
+  <div style="   display: flex;
+    flex-direction: column;">
+     <div style = "display: flex; gap:5px;">
+    <span style="color : red;">*</span>
+    <%= form.label :categorie_id, "Catégorie", class: "form-label" %>
+    </div>
+    <%= form.select :categorie_id, options_for_select(@categories_feuilles_avec_chemin, session[:form1]&.dig("categorie_id")),{ class: "form-select"}, {style: "width: 100%; padding: .375rem .75rem; background-color: rgb(250, 250, 250); border: none;cursor: pointer;" }  %>
+  </div>
+
+  <div >
+    <span style="color : red;">*</span>
+    <%= form.label :num_tele, "Numéro de téléphone", class: "form-label" ,style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);"%>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(doit contenir exactement 10 chiffres)</span>
+    <%= form.text_field :num_tele, class: "form-control", placeholder: "ex: +212637755555",value: session[:form1]&.dig("num_tele")%>
+  </div>
+
+  <div >
+    <span style="color : red;">*</span>
+    <%= form.label :description, "Description", class: "form-label" ,style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);"%>
+    <span style="font-size:16px;font-weight: 400;color: rgb(102, 102, 102);">(au minimum 10 caractères)</span>
+    <%= form.text_area :description, class: "form-control", placeholder: "Décrivez votre produit...", value: session[:form1]&.dig("description") %>
+  </div>
+
+  <div>
+    <%= form.label :prix, "Prix (DH)", class: "form-label",style:"font-size:16px;font-weight:400; color:rgb(45, 45, 45);" %>
+    <%= form.number_field :prix, class: "form-control", placeholder: "ex: 200.99", value: session[:form1]&.dig("prix") %>
+  </div>
+
+  <div >
+    <%= form.submit "Suivant", class: "btn btn-primary w-100" %>
+  </div>
+<% end %>
+</div>
