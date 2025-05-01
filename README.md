@@ -9,7 +9,7 @@ This is a web application built with **Ruby on Rails**, allowing users to post, 
 - Display ads by category and subcategory  
 - Dynamic filters by city, category, etc.  
 - Category-based dynamic ad form  
-- Authentication via Devise (sign up / login)  
+- Authentication via sign up / login  
 - Create, update, and delete ads  
 - Image uploads using Active Storage  
 - Sorting ads by publication date  
