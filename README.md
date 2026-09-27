@@ -34,10 +34,6 @@ This is a web application built with **Ruby on Rails**, allowing users to post, 
 
 - **storage/**: uploaded files via Active Storage
 
-## 📖 Report
-
-Report of project on [drive](https://drive.google.com/file/d/1WluCIECINikt97hXHmuGxOlGPlJf8Wz7/view?usp=drive_link)
-
 ## 🔒 Authentication
 
 Only logged-in users can create, edit, or delete ads
