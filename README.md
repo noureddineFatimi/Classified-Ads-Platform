@@ -21,7 +21,10 @@ This is a web application built with **Ruby on Rails**, allowing users to post, 
 - **Frontend**: HTML, CSS, Stimulus, Turbo  
 - **Authentication**: Devise  
 - **Image Handling**: Active Storage  
-- **Icons/Categories**: Static SVGs  
+- **Icons/Categories**: Static SVGs
+
+## MCD Database
+![description](db.png)
 
 ## 📁 Project Structure
 - **app/models**: application models (Ad, Category, User, etc.)
@@ -42,6 +45,9 @@ Only logged-in users can create, edit, or delete ads
 
 Academic project – For educational use.
 
+## Pictures
+![description](homepage.png)
+![description](form.png)
 
 
 
